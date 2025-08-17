@@ -219,109 +219,7 @@ class RoleController
         }
     }
 
-    // Update a role by ID
-    public function updateRoleById($id, $data)
-    {
-        try {
-            $connection = $this->db->getConnection();
 
-            if (!$connection) {
-                http_response_code(500);
-                return json_encode(['error' => 'Database connection failed']);
-            }
-
-            // Validate ID is a positive integer
-            if (!is_numeric($id) || $id <= 0) {
-                http_response_code(404);
-                return json_encode([
-                    'success' => false,
-                    'error' => 'Role not found'
-                ]);
-            }
-
-            // Check if name field exists
-            if (!isset($data['name'])) {
-                http_response_code(400);
-                return json_encode([
-                    'success' => false,
-                    'error' => 'Missing name field'
-                ]);
-            }
-
-            // Convert to lowercase and trim
-            $name = strtolower(trim($data['name']));
-
-            // Check if name is empty
-            if (empty($name)) {
-                http_response_code(400);
-                return json_encode([
-                    'success' => false,
-                    'error' => 'Name cannot be empty'
-                ]);
-            }
-
-            // Check for special characters (only letters allowed)
-            if (!preg_match('/^[a-z]+$/', $name)) {
-                http_response_code(400);
-                return json_encode([
-                    'success' => false,
-                    'error' => 'Failed to update role because special characters were used'
-                ]);
-            }
-
-            // Check if role exists
-            $checkSql = "SELECT * FROM roles WHERE id = ?";
-            $checkStmt = $connection->prepare($checkSql);
-            $checkStmt->execute([$id]);
-            $existingRole = $checkStmt->fetch();
-
-            if (!$existingRole) {
-                http_response_code(404);
-                return json_encode([
-                    'success' => false,
-                    'error' => 'Role not found'
-                ]);
-            }
-
-            // Check for duplicate name (excluding current role)
-            $dupSql = "SELECT COUNT(*) FROM roles WHERE LOWER(name) = ? AND id != ?";
-            $dupStmt = $connection->prepare($dupSql);
-            $dupStmt->execute([$name, $id]);
-
-            if ($dupStmt->fetchColumn() > 0) {
-                http_response_code(400);
-                return json_encode([
-                    'success' => false,
-                    'error' => 'Role name already exists'
-                ]);
-            }
-
-            // Update the role
-            $sql = "UPDATE roles SET name = ? WHERE id = ?";
-            $stmt = $connection->prepare($sql);
-            $stmt->execute([$name, $id]);
-
-            // Return updated role
-            $updatedRole = [
-                'id' => (int) $id,
-                'name' => $name
-            ];
-
-            http_response_code(200);
-            return json_encode([
-                'success' => true,
-                'message' => 'Role updated successfully',
-                'data' => $updatedRole
-            ]);
-
-        } catch (PDOException $e) {
-            http_response_code(500);
-            return json_encode([
-                'success' => false,
-                'error' => 'Failed to update role'
-            ]);
-        }
-    }
 
     // Delete a role by ID
     public function deleteRoleById($id)
@@ -464,6 +362,110 @@ class RoleController
         }
     }
 
+    // Update a role by ID
+    public function updateRoleById($id, $data)
+    {
+        try {
+            $connection = $this->db->getConnection();
+
+            if (!$connection) {
+                http_response_code(500);
+                return json_encode(['error' => 'Database connection failed']);
+            }
+
+            // Validate ID is a positive integer
+            if (!is_numeric($id) || $id <= 0) {
+                http_response_code(404);
+                return json_encode([
+                    'success' => false,
+                    'error' => 'Role not found'
+                ]);
+            }
+
+            // Check if name field exists
+            if (!isset($data['name'])) {
+                http_response_code(400);
+                return json_encode([
+                    'success' => false,
+                    'error' => 'Missing name field'
+                ]);
+            }
+
+            // Convert to lowercase and trim
+            $name = strtolower(trim($data['name']));
+
+            // Check if name is empty
+            if (empty($name)) {
+                http_response_code(400);
+                return json_encode([
+                    'success' => false,
+                    'error' => 'Name cannot be empty'
+                ]);
+            }
+
+            // Check for special characters (only letters allowed)
+            if (!preg_match('/^[a-z]+$/', $name)) {
+                http_response_code(400);
+                return json_encode([
+                    'success' => false,
+                    'error' => 'Failed to update role because special characters were used'
+                ]);
+            }
+
+            // Check if role exists
+            $checkSql = "SELECT * FROM roles WHERE id = ?";
+            $checkStmt = $connection->prepare($checkSql);
+            $checkStmt->execute([$id]);
+            $existingRole = $checkStmt->fetch();
+
+            if (!$existingRole) {
+                http_response_code(404);
+                return json_encode([
+                    'success' => false,
+                    'error' => 'Role not found'
+                ]);
+            }
+
+            // Check for duplicate name (excluding current role)
+            $dupSql = "SELECT COUNT(*) FROM roles WHERE LOWER(name) = ? AND id != ?";
+            $dupStmt = $connection->prepare($dupSql);
+            $dupStmt->execute([$name, $id]);
+
+            if ($dupStmt->fetchColumn() > 0) {
+                http_response_code(400);
+                return json_encode([
+                    'success' => false,
+                    'error' => 'Role name already exists'
+                ]);
+            }
+
+            // Update the role
+            $sql = "UPDATE roles SET name = ? WHERE id = ?";
+            $stmt = $connection->prepare($sql);
+            $stmt->execute([$name, $id]);
+
+            // Return updated role
+            $updatedRole = [
+                'id' => (int) $id,
+                'name' => $name
+            ];
+
+            http_response_code(200);
+            return json_encode([
+                'success' => true,
+                'message' => 'Role updated successfully',
+                'data' => $updatedRole
+            ]);
+
+        } catch (PDOException $e) {
+            http_response_code(500);
+            return json_encode([
+                'success' => false,
+                'error' => 'Failed to update role'
+            ]);
+        }
+    }
+
     // Update a role by name
     public function updateRoleByName($currentName, $data)
     {
@@ -485,36 +487,6 @@ class RoleController
                 ]);
             }
 
-            // Check if name field exists
-            if (!isset($data['name'])) {
-                http_response_code(400);
-                return json_encode([
-                    'success' => false,
-                    'error' => 'Missing name field'
-                ]);
-            }
-
-            // Convert new name to lowercase and trim
-            $newName = strtolower(trim($data['name']));
-
-            // Check if new name is empty
-            if (empty($newName)) {
-                http_response_code(400);
-                return json_encode([
-                    'success' => false,
-                    'error' => 'Name cannot be empty'
-                ]);
-            }
-
-            // Check for special characters (only letters allowed)
-            if (!preg_match('/^[a-z]+$/', $newName)) {
-                http_response_code(400);
-                return json_encode([
-                    'success' => false,
-                    'error' => 'Failed to update role because special characters were used'
-                ]);
-            }
-
             // Check if role exists
             $checkSql = "SELECT * FROM roles WHERE LOWER(name) = ?";
             $checkStmt = $connection->prepare($checkSql);
@@ -529,36 +501,103 @@ class RoleController
                 ]);
             }
 
-            // Check for duplicate new name (excluding current role)
-            $dupSql = "SELECT COUNT(*) FROM roles WHERE LOWER(name) = ? AND id != ?";
-            $dupStmt = $connection->prepare($dupSql);
-            $dupStmt->execute([$newName, $existingRole['id']]);
+            $response = [];
+            $currentRoleId = $existingRole['id'];
+            $currentRoleName = $existingRole['name'];
 
-            if ($dupStmt->fetchColumn() > 0) {
-                http_response_code(400);
-                return json_encode([
-                    'success' => false,
-                    'error' => 'Role name already exists'
-                ]);
+            // Handle ID update if provided
+            if (isset($data['id'])) {
+                $newId = $data['id'];
+
+                // Validate ID is a positive integer
+                if (!is_numeric($newId) || $newId <= 0) {
+                    $response['id'] = [
+                        'msg' => 'Invalid ID format',
+                        'status' => 400,
+                        'data' => (int) $currentRoleId
+                    ];
+                } else {
+                    // Check for duplicate ID
+                    $idCheckSql = "SELECT COUNT(*) FROM roles WHERE id = ? AND id != ?";
+                    $idCheckStmt = $connection->prepare($idCheckSql);
+                    $idCheckStmt->execute([$newId, $currentRoleId]);
+
+                    if ($idCheckStmt->fetchColumn() > 0) {
+                        $response['id'] = [
+                            'msg' => 'ID not changed due to existing ID',
+                            'status' => 409,
+                            'data' => (int) $currentRoleId
+                        ];
+                    } else {
+                        // Update ID
+                        $updateIdSql = "UPDATE roles SET id = ? WHERE id = ?";
+                        $updateIdStmt = $connection->prepare($updateIdSql);
+                        $updateIdStmt->execute([$newId, $currentRoleId]);
+
+                        $response['id'] = [
+                            'msg' => 'ID updated successfully',
+                            'status' => 200,
+                            'data' => (int) $newId
+                        ];
+                        $currentRoleId = $newId; // Update for subsequent operations
+                    }
+                }
             }
 
-            // Update the role
-            $sql = "UPDATE roles SET name = ? WHERE id = ?";
-            $stmt = $connection->prepare($sql);
-            $stmt->execute([$newName, $existingRole['id']]);
+            // Handle name update
+            if (isset($data['name'])) {
+                $newName = strtolower(trim($data['name']));
 
-            // Return updated role
-            $updatedRole = [
-                'id' => (int) $existingRole['id'],
-                'name' => $newName
-            ];
+                // Check if new name is empty
+                if (empty($newName)) {
+                    $response['name'] = [
+                        'msg' => 'Name cannot be empty',
+                        'status' => 400,
+                        'data' => $currentRoleName
+                    ];
+                } elseif (!preg_match('/^[a-z]+$/', $newName)) {
+                    // Check for special characters
+                    $response['name'] = [
+                        'msg' => 'Failed to update name because special characters were used',
+                        'status' => 400,
+                        'data' => $currentRoleName
+                    ];
+                } else {
+                    // Check for duplicate name (excluding current role)
+                    $nameCheckSql = "SELECT COUNT(*) FROM roles WHERE LOWER(name) = ? AND id != ?";
+                    $nameCheckStmt = $connection->prepare($nameCheckSql);
+                    $nameCheckStmt->execute([$newName, $currentRoleId]);
+
+                    if ($nameCheckStmt->fetchColumn() > 0) {
+                        $response['name'] = [
+                            'msg' => 'Name not changed due to existing name',
+                            'status' => 409,
+                            'data' => $currentRoleName
+                        ];
+                    } else {
+                        // Update name
+                        $updateNameSql = "UPDATE roles SET name = ? WHERE id = ?";
+                        $updateNameStmt = $connection->prepare($updateNameSql);
+                        $updateNameStmt->execute([$newName, $currentRoleId]);
+
+                        $response['name'] = [
+                            'msg' => 'Name updated successfully',
+                            'status' => 200,
+                            'data' => $newName
+                        ];
+                    }
+                }
+            } else {
+                // No name provided
+                $response['name'] = [
+                    'msg' => 'Missing name field',
+                    'status' => 400,
+                    'data' => $currentRoleName
+                ];
+            }
 
             http_response_code(200);
-            return json_encode([
-                'success' => true,
-                'message' => 'Role updated successfully',
-                'data' => $updatedRole
-            ]);
+            return json_encode($response);
 
         } catch (PDOException $e) {
             http_response_code(500);
