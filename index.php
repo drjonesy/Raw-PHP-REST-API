@@ -2,13 +2,14 @@
 // Include the database class and routes
 require_once 'Database.php';
 require_once 'src/Routes/RoleRoutes.php';
+require_once 'src/Routes/DateRoutes.php';
 
 // Tell the browser we're sending JSON data
 header('Content-Type: application/json');
 
 // Allow requests from any website (CORS)
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 // Handle preflight requests (browsers send these first)
@@ -43,6 +44,9 @@ try {
 if (strpos($path, '/roles') === 0) {
     $roleRoutes = new RoleRoutes($database);
     echo $roleRoutes->handleRequest($method, $path);
+} elseif (strpos($path, '/dates') === 0) {
+    $dateRoutes = new DateRoutes($database);
+    echo $dateRoutes->handleRequest($method, $path);
 } else {
     // Handle root requests (for testing connection)
     switch ($method) {

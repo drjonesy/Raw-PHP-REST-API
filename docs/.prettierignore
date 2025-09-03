@@ -1,0 +1,6 @@
+# Ignore Hugo JSON template files
+layouts/index.json.json
+
+# Optionally ignore all Hugo template files
+layouts/**/*.json
+layouts/**/*.html
