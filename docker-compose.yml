@@ -1,9 +1,10 @@
+name: raw-php-api
 services:
   openlitespeed-php:
     build:
       context: .
     platform: linux/arm64
-    container_name: openlitespeed-php
+    container_name: openlitespeed-server
     ports:
       - "7080:7080" # OpenLiteSpeed admin panel
       - "80:80" # HTTP
