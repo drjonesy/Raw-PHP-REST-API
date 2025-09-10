@@ -46,19 +46,19 @@ docker compose up -d
 
 ## Containers
 
-<a href="https://www.litespeedtech.com/products/litespeed-web-server" target="_blank"><img src="readme-media/litespeed-logo.png" style="width: 100px;" alt="Litespeed Web Server logo" /></a>
+<a href="https://www.litespeedtech.com/products/litespeed-web-server" target="_blank"><img src="readme-media/litespeed-logo.png" style="width: 100px; float: left;" alt="Litespeed Web Server logo" /></a>
 
 ### OpenLiteSpeed
 
 This is a server that is used by the hosting company `Hostinger.com` on their Shared Hosting. It is a variance of Apache. It is faster and has less dependencies than Apache.
 
-<a href="https://www.phpmyadmin.net/" target="_blank"><img src="readme-media/phpmyadmin-logo.png" style="width: 100px;" alt="PHP My Admin logo" /></a>
+<a href="https://www.phpmyadmin.net/" target="_blank"><img src="readme-media/phpmyadmin-logo.png" style="width: 100px; float: left;" alt="PHP My Admin logo" /></a>
 
 ### phpMyAdmin
 
 This is a backend admin console for interacting with `MySQL` databases. This also works with `MariaDB` because it is a variance adapted from MySQL.
 
-<a href="https://mariadb.com/" target="_blank"><img src="readme-media/mariadb-logo.png" style="width: 100px;" alt="Maria Database logo" /></a>
+<a href="https://mariadb.com/" target="_blank"><img src="readme-media/mariadb-logo.png" style="width: 100px; float: left;" alt="Maria Database logo" /></a>
 
 ### MariaDB
 
