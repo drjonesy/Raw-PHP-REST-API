@@ -77,6 +77,10 @@ MariaDB is an open-source relational database management system (RDBMS) that is 
 
 This is currently uses a `MariaDB` part of the Shared Hosting service. You will need to configure the database yourself. Rename `.env.example` to `.env` - You'll notice there is commented out `Production` section. This is for your live environment. To build this, I utilized Docker which is why the: **DB_HOST** is set to `mariadb`. However, for the production, I will comment out the Development and uncomment the Production along with supplying the correct address for the database. And of course providing the values for the other values.
 
+🗄️ To build the basic structure of the database. Please use the `db-model/schema.sql` file. The easiest way to accomplish this is by running each model separately in `phpMyAdmin`.
+
+## Environment Variables (.env)
+
 ▶️ **Development** this is set to `mariadb` to reference the Docker Container. Otherwise you might not be able to connect, since you are not running the api directly in docker.
 
 ```yaml
