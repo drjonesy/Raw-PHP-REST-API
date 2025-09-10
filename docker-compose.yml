@@ -1,0 +1,41 @@
+services:
+  openlitespeed-php:
+    build:
+      context: .
+    platform: linux/arm64
+    container_name: openlitespeed-php
+    ports:
+      - "7080:7080" # OpenLiteSpeed admin panel
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
+      - "2222:22" # (Optional) SSH if you add SSH server yourself
+    volumes:
+      - ./src:/var/www/vhosts/localhost/html
+    environment:
+      - TZ=UTC
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb:10.11.10-jammy
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example_root_password
+      # MYSQL_DATABASE: example_database
+      MYSQL_USER: example_user
+      MYSQL_PASSWORD: example_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mariadb
+      # PMA_USER: example_user
+      # PMA_PASSWORD: example_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
