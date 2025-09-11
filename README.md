@@ -46,7 +46,7 @@ docker compose up -d
 
 ## Containers
 
-<a href="https://www.litespeedtech.com/products/litespeed-web-server" target="_blank"><img src="readme-media/litespeed-logo.png" style="width: 100px; float: left;" alt="Litespeed Web Server logo" /></a>
+<a href="https://www.litespeedtech.com/products/litespeed-web-server" target="_blank"><img src="readme-media/litespeed-logo.png" style="width: 100px;" align="left" alt="Litespeed Web Server logo" /></a>
 
 ### OpenLiteSpeed
 
