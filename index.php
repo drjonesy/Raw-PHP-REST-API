@@ -3,6 +3,7 @@
 require_once 'Database.php';
 require_once 'src/Routes/RoleRoutes.php';
 require_once 'src/Routes/DateRoutes.php';
+require_once 'src/Routes/UserRoutes.php';
 
 // Tell the browser we're sending JSON data
 header('Content-Type: application/json');
@@ -47,6 +48,9 @@ if (strpos($path, '/roles') === 0) {
 } elseif (strpos($path, '/dates') === 0) {
     $dateRoutes = new DateRoutes($database);
     echo $dateRoutes->handleRequest($method, $path);
+} elseif (strpos($path, '/users') === 0) {
+    $userRoutes = new UserRoutes($database);
+    echo $userRoutes->handleRequest($method, $path);
 } else {
     // Handle root requests (for testing connection)
     switch ($method) {
